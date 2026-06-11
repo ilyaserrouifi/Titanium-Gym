@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Horaires | Admin Titanium Gym</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: #0A0A0A; color: #FFFFFF; }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: #111111;
+            border-right: 1px solid rgba(255,107,0,0.2);
+            z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+        .sidebar-header { padding: 25px; text-align: center; border-bottom: 1px solid rgba(255,107,0,0.2); }
+        .logo-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #FF6B00, #FF3B30); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
+        .logo-icon i { font-size: 1.8rem; color: white; }
+        .sidebar-header h3 { font-size: 1.2rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
+        .sidebar-header p { font-size: 0.65rem; opacity: 0.7; }
+        .sidebar-nav { padding: 20px 0; }
+        .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 15px; color: #B0B0B0; text-decoration: none; transition: all 0.3s; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,107,0,0.1); color: #FF6B00; border-left: 4px solid #FF6B00; }
+        .nav-item i { width: 22px; }
+        
+        .main-content { margin-left: 280px; padding: 20px; min-height: 100vh; }
+        .top-bar { background: #111111; border-radius: 16px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid rgba(255,107,0,0.1); }
+        .logout-btn { background: #FF3B30; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .logout-btn:hover { background: #D32F2F; transform: translateY(-2px); }
+        
+        .horaires-container { background: #111111; border-radius: 20px; padding: 30px; border: 1px solid rgba(255,107,0,0.1); max-width: 800px; margin: 0 auto; }
+        .horaires-title { text-align: center; margin-bottom: 30px; }
+        .horaires-title h3 { font-size: 1.5rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
+        .horaires-title p { color: #B0B0B0; font-size: 0.85rem; }
+        
+        .horaire-item { background: #0A0A0A; border-radius: 16px; margin-bottom: 15px; padding: 15px 20px; border: 1px solid rgba(255,107,0,0.1); transition: all 0.3s; }
+        .horaire-item:hover { border-color: #FF6B00; }
+        .horaire-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .horaire-day { font-size: 1.1rem; font-weight: 700; color: #FF6B00; width: 120px; }
+        .horaire-time { display: flex; gap: 15px; flex-wrap: wrap; flex: 1; }
+        .horaire-time input { background: #0A0A0A; border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; padding: 10px 15px; color: white; font-family: 'Montserrat', sans-serif; }
+        .horaire-time input:focus { outline: none; border-color: #FF6B00; }
+        .horaire-actions { display: flex; gap: 10px; }
+        .btn-save { background: #00FF87; color: #0A0A0A; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-save:hover { background: #00CC6A; transform: translateY(-2px); }
+        .btn-reset { background: #FF6B00; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; margin-left: 10px; }
+        .btn-reset:hover { background: #E05A00; transform: translateY(-2px); }
+        
+        .badge-ferme { background: #FF3B30; color: white; padding: 8px 20px; border-radius: 10px; font-weight: 600; display: inline-block; }
+        
+        .alert-message { position: fixed; bottom: 20px; right: 20px; background: #00FF87; color: #0A0A0A; padding: 12px 24px; border-radius: 12px; z-index: 9999; display: none; }
+        .alert-message.show { display: block; animation: fadeInOut 3s ease; }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateX(50px); } 15% { opacity: 1; transform: translateX(0); } 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(50px); } }
+        
+        @media (max-width: 768px) {
+            .sidebar { left: -280px; }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: block; position: fixed; top: 20px; left: 20px; z-index: 101; background: #FF6B00; color: white; padding: 10px; border-radius: 10px; cursor: pointer; }
+            .horaire-header { flex-direction: column; align-items: flex-start; }
+            .horaire-time { width: 100%; }
+            .horaire-time input { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" id="menuToggle" style="display:none;"><i class="fas fa-bars"></i></div>
+    
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="fas fa-dumbbell"></i></div>
+            <h3>TITANIUM GYM</h3>
+            <p>ESPACE ADMIN</p>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+            <a href="membres.html" class="nav-item"><i class="fas fa-users"></i><span>Membres</span></a>
+            <a href="coachs.html" class="nav-item"><i class="fas fa-chalkboard-user"></i><span>Coachs</span></a>
+            <a href="services.html" class="nav-item"><i class="fas fa-dumbbell"></i><span>Services</span></a>
+            <a href="horaires.html" class="nav-item active"><i class="fas fa-clock"></i><span>Horaires</span></a>
+            <a href="messages.html" class="nav-item"><i class="fas fa-envelope"></i><span>Messages</span></a>
+            <a href="#" class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="page-title"><h2><i class="fas fa-clock"></i> Gestion des horaires</h2></div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+        
+        <div class="horaires-container">
+            <div class="horaires-title">
+                <h3>⏰ Horaires d'ouverture</h3>
+                <p>Modifiez les horaires d'ouverture de la salle</p>
+            </div>
+            
+            <div id="horairesList"></div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <button class="btn-reset" onclick="resetHoraires()"><i class="fas fa-undo-alt"></i> Réinitialiser aux horaires par défaut</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="alert-message" id="alertMsg">
+        <i class="fas fa-check-circle"></i> Horaires mis à jour !
+    </div>
+    
+    <script>
+        function checkAuth() { const isLoggedIn = localStorage.getItem('adminLoggedIn'); if (!isLoggedIn) window.location.href = 'login.html'; }
+        function logout() { localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('adminUser'); window.location.href = 'login.html'; }
+        
+        function getHoraires() {
+            return JSON.parse(localStorage.getItem('horaires_gym') || '[]');
+        }
+        
+        function saveHoraires(data) {
+            localStorage.setItem('horaires_gym', JSON.stringify(data));
+        }
+        
+        function initHoraires() {
+            let horaires = getHoraires();
+            if(horaires.length === 0) {
+                horaires = [
+                    { jour: "Lundi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                    { jour: "Mardi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                    { jour: "Mercredi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                    { jour: "Jeudi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                    { jour: "Vendredi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                    { jour: "Samedi", ouvert: true, ouverture: "08:00", fermeture: "21:00" },
+                    { jour: "Dimanche", ouvert: true, ouverture: "09:00", fermeture: "20:00" }
+                ];
+                saveHoraires(horaires);
+            }
+            return horaires;
+        }
+        
+        function renderHoraires() {
+            const horaires = getHoraires();
+            const container = document.getElementById('horairesList');
+            
+            container.innerHTML = horaires.map((h, index) => `
+                <div class="horaire-item" data-index="${index}">
+                    <div class="horaire-header">
+                        <div class="horaire-day">${h.jour}</div>
+                        <div class="horaire-time">
+                            ${h.ouvert ? `
+                                <input type="time" id="ouverture_${index}" value="${h.ouverture}" class="time-input">
+                                <span style="color:#B0B0B0;">à</span>
+                                <input type="time" id="fermeture_${index}" value="${h.fermeture}" class="time-input">
+                            ` : `
+                                <span class="badge-ferme"><i class="fas fa-door-closed"></i> Fermé</span>
+                            `}
+                        </div>
+                        <div class="horaire-actions">
+                            <button class="btn-save" onclick="updateHoraire(${index})"><i class="fas fa-save"></i> Enregistrer</button>
+                            <button class="btn-reset" onclick="toggleJour(${index}, ${!h.ouvert})"><i class="fas ${h.ouvert ? 'fa-door-closed' : 'fa-door-open'}"></i> ${h.ouvert ? 'Fermer' : 'Ouvrir'}</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateHoraire(index) {
+            const horaires = getHoraires();
+            if(horaires[index].ouvert) {
+                const ouverture = document.getElementById(`ouverture_${index}`).value;
+                const fermeture = document.getElementById(`fermeture_${index}`).value;
+                if(ouverture && fermeture) {
+                    horaires[index].ouverture = ouverture;
+                    horaires[index].fermeture = fermeture;
+                    saveHoraires(horaires);
+                    showAlert('Horaires mis à jour !');
+                } else {
+                    showAlert('Veuillez remplir les deux champs', 'error');
+                }
+            }
+        }
+        
+        function toggleJour(index, etat) {
+            const horaires = getHoraires();
+            horaires[index].ouvert = etat;
+            saveHoraires(horaires);
+            renderHoraires();
+            showAlert(etat ? `${horaires[index].jour} ouvert` : `${horaires[index].jour} fermé`);
+        }
+        
+        function resetHoraires() {
+            const horairesParDefaut = [
+                { jour: "Lundi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                { jour: "Mardi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                { jour: "Mercredi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                { jour: "Jeudi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                { jour: "Vendredi", ouvert: true, ouverture: "06:00", fermeture: "23:00" },
+                { jour: "Samedi", ouvert: true, ouverture: "08:00", fermeture: "21:00" },
+                { jour: "Dimanche", ouvert: true, ouverture: "09:00", fermeture: "20:00" }
+            ];
+            saveHoraires(horairesParDefaut);
+            renderHoraires();
+            showAlert('Horaires réinitialisés !');
+        }
+        
+        function showAlert(msg, type = 'success') {
+            const alert = document.getElementById('alertMsg');
+            alert.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${msg}`;
+            alert.style.background = type === 'success' ? '#00FF87' : '#FF3B30';
+            alert.style.color = type === 'success' ? '#0A0A0A' : 'white';
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 3000);
+        }
+        
+        // Mobile menu
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        if(menuToggle) {
+            menuToggle.style.display = 'block';
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                if(sidebar.classList.contains('active')) sidebar.style.left = '0';
+                else sidebar.style.left = '-280px';
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            initHoraires();
+            renderHoraires();
+        });
+    </script>
+</body>
+</html>
