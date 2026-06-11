@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages | Admin Titanium Gym</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: #0A0A0A; color: #FFFFFF; }
+        
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: #111111;
+            border-right: 1px solid rgba(255,107,0,0.2);
+            z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+        .sidebar-header { padding: 25px; text-align: center; border-bottom: 1px solid rgba(255,107,0,0.2); }
+        .logo-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #FF6B00, #FF3B30); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
+        .logo-icon i { font-size: 1.8rem; color: white; }
+        .sidebar-header h3 { font-size: 1.2rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
+        .sidebar-header p { font-size: 0.65rem; opacity: 0.7; }
+        .sidebar-nav { padding: 20px 0; }
+        .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 15px; color: #B0B0B0; text-decoration: none; transition: all 0.3s; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,107,0,0.1); color: #FF6B00; border-left: 4px solid #FF6B00; }
+        .nav-item i { width: 22px; }
+        
+        .main-content { margin-left: 280px; padding: 20px; min-height: 100vh; }
+        .top-bar { background: #111111; border-radius: 16px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid rgba(255,107,0,0.1); }
+        .logout-btn { background: #FF3B30; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .logout-btn:hover { background: #D32F2F; transform: translateY(-2px); }
+        
+        .stats-messages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+        .stat-card { background: #111111; border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(255,107,0,0.1); }
+        .stat-card i { font-size: 2rem; color: #FF6B00; margin-bottom: 10px; }
+        .stat-card h3 { font-size: 1.8rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
+        .stat-card p { color: #B0B0B0; font-size: 0.8rem; }
+        
+        .data-table { background: #111111; border-radius: 20px; padding: 20px; border: 1px solid rgba(255,107,0,0.1); overflow-x: auto; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .search-input { padding: 10px 18px; border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; width: 250px; background: #0A0A0A; color: white; font-family: 'Montserrat', sans-serif; }
+        .btn-export { background: #00FF87; color: #0A0A0A; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-export:hover { background: #00CC6A; transform: translateY(-2px); }
+        .btn-delete-all { background: #FF3B30; color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; margin-left: 10px; transition: all 0.3s; }
+        .btn-delete-all:hover { background: #D32F2F; transform: translateY(-2px); }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: #FF6B00; font-weight: 700; }
+        tr:hover { background: rgba(255,107,0,0.05); }
+        tr.unread { background: rgba(255,107,0,0.1); }
+        
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .badge-success { background: rgba(0,255,135,0.2); color: #00FF87; }
+        .badge-warning { background: rgba(255,107,0,0.2); color: #FF6B00; }
+        
+        .btn-view { background: #FF6B00; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; margin-right: 5px; transition: all 0.3s; }
+        .btn-view:hover { background: #E05A00; transform: translateY(-2px); }
+        .btn-delete { background: #FF3B30; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .btn-delete:hover { background: #D32F2F; transform: translateY(-2px); }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+        .modal.show { display: flex; }
+        .modal-content { background: #111111; border-radius: 24px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto; border: 1px solid rgba(255,107,0,0.2); animation: modalFadeIn 0.3s ease; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        .modal-header { background: linear-gradient(135deg, #FF6B00, #FF3B30); padding: 20px 25px; border-radius: 24px 24px 0 0; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { font-size: 1.2rem; color: white; }
+        .modal-close { cursor: pointer; font-size: 1.5rem; color: white; transition: all 0.3s; }
+        .modal-close:hover { color: #0A0A0A; }
+        
+        .profile-avatar { width: 80px; height: 80px; background: linear-gradient(135deg, #FF6B00, #FF3B30); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: -40px auto 20px auto; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .profile-avatar i { font-size: 2.5rem; color: white; }
+        
+        .profile-info { padding: 0 30px 30px 30px; }
+        .info-row { display: flex; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .info-label { width: 120px; font-weight: 700; color: #FF6B00; }
+        .info-value { flex: 1; color: #B0B0B0; word-break: break-word; }
+        .message-full { background: #0A0A0A; border-radius: 16px; padding: 20px; margin-top: 20px; border: 1px solid rgba(255,107,0,0.1); }
+        .message-full p { line-height: 1.6; color: #FFFFFF; }
+        
+        .modal-footer { padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: flex-end; gap: 15px; }
+        .btn-reply { background: #25D366; color: white; border: none; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .btn-reply:hover { background: #128C7E; transform: translateY(-2px); }
+        
+        .empty-state { text-align: center; padding: 50px; color: #6B6B6B; }
+        .empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
+        
+        @media (max-width: 768px) {
+            .sidebar { left: -280px; }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: block; position: fixed; top: 20px; left: 20px; z-index: 101; background: #FF6B00; color: white; padding: 10px; border-radius: 10px; cursor: pointer; }
+            .stats-messages { grid-template-columns: 1fr; }
+            .info-row { flex-direction: column; }
+            .info-label { width: 100%; margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" id="menuToggle" style="display:none;"><i class="fas fa-bars"></i></div>
+    
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="fas fa-dumbbell"></i></div>
+            <h3>TITANIUM GYM</h3>
+            <p>ESPACE ADMIN</p>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+            <a href="membres.html" class="nav-item"><i class="fas fa-users"></i><span>Membres</span></a>
+            <a href="coachs.html" class="nav-item"><i class="fas fa-chalkboard-user"></i><span>Coachs</span></a>
+            <a href="services.html" class="nav-item"><i class="fas fa-dumbbell"></i><span>Services</span></a>
+            <a href="horaires.html" class="nav-item"><i class="fas fa-clock"></i><span>Horaires</span></a>
+            <a href="messages.html" class="nav-item active"><i class="fas fa-envelope"></i><span>Messages</span></a>
+            <a href="#" class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="page-title"><h2><i class="fas fa-envelope"></i> Messages de contact</h2></div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+        
+        <div class="stats-messages" id="statsMessages">
+            <div class="stat-card"><i class="fas fa-envelope"></i><h3 id="totalMessages">0</h3><p>Total messages</p></div>
+            <div class="stat-card"><i class="fas fa-envelope-open-text"></i><h3 id="nonlusMessages">0</h3><p>Non lus</p></div>
+            <div class="stat-card"><i class="fas fa-check-circle"></i><h3 id="lusMessages">0</h3><p>Lus</p></div>
+        </div>
+        
+        <div class="data-table">
+            <div class="table-header">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher...">
+                <div>
+                    <button class="btn-export" onclick="exportMessages()"><i class="fas fa-file-excel"></i> Exporter</button>
+                    <button class="btn-delete-all" onclick="deleteAllMessages()"><i class="fas fa-trash-alt"></i> Tout supprimer</button>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table id="messagesTable">
+                    <thead>
+                        <tr><th>ID</th><th>Nom</th><th>Email</th><th>Sujet</th><th>Date</th><th>Statut</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="messagesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Profil Message -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-circle"></i> Détails du message</h3>
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info" id="profileInfo"></div>
+            <div class="modal-footer">
+                <button class="btn-reply" onclick="replyToMessage()"><i class="fab fa-whatsapp"></i> Répondre</button>
+                <button class="btn-delete" onclick="deleteCurrentMessage()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function checkAuth() { const isLoggedIn = localStorage.getItem('adminLoggedIn'); if (!isLoggedIn) window.location.href = 'login.html'; }
+        function logout() { localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('adminUser'); window.location.href = 'login.html'; }
+        
+        function getMessages() { return JSON.parse(localStorage.getItem('contactMessages_gym') || '[]'); }
+        function saveMessages(data) { localStorage.setItem('contactMessages_gym', JSON.stringify(data)); }
+        
+        let currentMessages = [];
+        let currentSelectedMessage = null;
+        
+        function loadMessages() {
+            currentMessages = getMessages();
+            updateStats();
+            renderTable(currentMessages);
+        }
+        
+        function updateStats() {
+            const total = currentMessages.length;
+            const nonlus = currentMessages.filter(m => !m.lu).length;
+            const lus = currentMessages.filter(m => m.lu).length;
+            document.getElementById('totalMessages').innerText = total;
+            document.getElementById('nonlusMessages').innerText = nonlus;
+            document.getElementById('lusMessages').innerText = lus;
+        }
+        
+        function renderTable(data) {
+            const tbody = document.getElementById('messagesTableBody');
+            if(data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-inbox"></i><br>Aucun message reçu</td>' +
+                '<tr><td colspan="7" style="text-align:center;"><button class="btn-add" style="margin-top:15px; background:#00FF87; color:#0A0A0A; border:none; padding:10px 20px; border-radius:12px;" onclick="addDemoMessage()"><i class="fas fa-plus"></i> Ajouter un message de test</button></td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map((msg, i) => `
+                <tr class="${!msg.lu ? 'unread' : ''}">
+                    <td>${i+1}</td>
+                    <td><strong>${escapeHtml(msg.nom) || '-'}</strong></td>
+                    <td>${escapeHtml(msg.email) || '-'}</td>
+                    <td>${escapeHtml(msg.sujet) || '-'}</td>
+                    <td>${msg.date || '-'}</td>
+                    <td><span class="badge ${msg.lu ? 'badge-success' : 'badge-warning'}">${msg.lu ? 'Lu' : 'Non lu'}</span></td>
+                    <td><button class="btn-view" onclick="viewMessage(${msg.id})"><i class="fas fa-eye"></i> Voir</button><button class="btn-delete" onclick="deleteMessage(${msg.id})"><i class="fas fa-trash"></i></button></td>
+                </tr>`).join('');
+        }
+        
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+        
+        function viewMessage(id) {
+            const message = currentMessages.find(m => m.id === id);
+            if(!message) return;
+            currentSelectedMessage = message;
+            if(!message.lu) markAsRead(id);
+            
+            document.getElementById('profileInfo').innerHTML = `
+                <div class="info-row"><div class="info-label">Nom</div><div class="info-value"><strong>${escapeHtml(message.nom) || '-'}</strong></div></div>
+                <div class="info-row"><div class="info-label">Email</div><div class="info-value">${escapeHtml(message.email) || '-'}</div></div>
+                <div class="info-row"><div class="info-label">Téléphone</div><div class="info-value">${escapeHtml(message.telephone) || 'Non renseigné'}</div></div>
+                <div class="info-row"><div class="info-label">Sujet</div><div class="info-value"><span class="badge badge-warning">${escapeHtml(message.sujet) || '-'}</span></div></div>
+                <div class="info-row"><div class="info-label">Date</div><div class="info-value">${message.date || '-'}</div></div>
+                <div class="message-full"><div class="info-label" style="margin-bottom:10px;">Message</div><p>${escapeHtml(message.message) || 'Aucun message'}</p></div>
+                <div class="info-row"><div class="info-label">Statut</div><div class="info-value"><span class="badge ${message.lu ? 'badge-success' : 'badge-warning'}">${message.lu ? 'Lu' : 'Non lu'}</span></div></div>
+            `;
+            document.getElementById('profileModal').classList.add('show');
+        }
+        
+        function markAsRead(id) {
+            let messages = getMessages();
+            const index = messages.findIndex(m => m.id === id);
+            if(index !== -1) { messages[index].lu = true; saveMessages(messages); loadMessages(); }
+        }
+        
+        function deleteMessage(id) {
+            if(confirm('Supprimer ce message ?')) {
+                let messages = getMessages();
+                messages = messages.filter(m => m.id !== id);
+                saveMessages(messages);
+                loadMessages();
+                showToast('Message supprimé');
+                if(currentSelectedMessage && currentSelectedMessage.id === id) closeModal();
+            }
+        }
+        
+        function deleteCurrentMessage() { if(currentSelectedMessage) deleteMessage(currentSelectedMessage.id); closeModal(); }
+        
+        function deleteAllMessages() {
+            if(confirm('⚠️ Supprimer TOUS les messages ? Action irréversible !')) {
+                saveMessages([]);
+                loadMessages();
+                showToast('Tous les messages supprimés');
+            }
+        }
+        
+        function replyToMessage() {
+            if(currentSelectedMessage && currentSelectedMessage.telephone) {
+                let phone = currentSelectedMessage.telephone.replace(/\s/g, '');
+                if(!phone.startsWith('212') && !phone.startsWith('0')) phone = '212' + phone;
+                else if(phone.startsWith('0')) phone = '212' + phone.substring(1);
+                const msg = encodeURIComponent(`Bonjour ${currentSelectedMessage.nom}, nous avons bien reçu votre message concernant "${currentSelectedMessage.sujet}". Nous vous répondrons dans les plus brefs délais. Cordialement, Titanium Gym.`);
+                window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+            } else if(currentSelectedMessage && currentSelectedMessage.email) {
+                window.location.href = `mailto:${currentSelectedMessage.email}?subject=Réponse: ${currentSelectedMessage.sujet}&body=Bonjour ${currentSelectedMessage.nom},%0D%0A%0D%0ANous avons bien reçu votre message. Nous vous répondrons dans les plus brefs délais.%0D%0A%0D%0ACordialement,%0D%0ATitanium Gym`;
+            } else { showToast('Aucun contact disponible', 'error'); }
+        }
+        
+        function closeModal() { document.getElementById('profileModal').classList.remove('show'); currentSelectedMessage = null; }
+        
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `position:fixed;bottom:20px;right:20px;background:${type === 'success' ? '#00FF87' : '#FF3B30'};color:${type === 'success' ? '#0A0A0A' : 'white'};padding:12px 20px;border-radius:12px;z-index:9999;`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function exportMessages() {
+            let csv = "ID,Nom,Email,Téléphone,Sujet,Message,Date,Statut\n";
+            currentMessages.forEach((msg, i) => {
+                csv += `${i+1},"${escapeCsv(msg.nom || '')}","${escapeCsv(msg.email || '')}","${escapeCsv(msg.telephone || '')}","${escapeCsv(msg.sujet || '')}","${escapeCsv(msg.message || '').replace(/"/g, '""')}","${msg.date || ''}","${msg.lu ? 'Lu' : 'Non lu'}"\n`;
+            });
+            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `messages_titanium_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            showToast('Export terminé');
+        }
+        function escapeCsv(str) { if(!str) return ''; return str.replace(/"/g, '""'); }
+        
+        function addDemoMessage() {
+            const demoMsg = {
+                id: Date.now(),
+                date: new Date().toLocaleString(),
+                nom: "Client Test",
+                email: "test@email.com",
+                telephone: "0612345678",
+                sujet: "Information abonnement",
+                message: "Bonjour, je souhaite avoir plus d'informations sur les abonnements Pro et Premium. Merci.",
+                lu: false
+            };
+            let messages = getMessages();
+            messages.push(demoMsg);
+            saveMessages(messages);
+            loadMessages();
+            showToast('Message de test ajouté');
+        }
+        
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const search = e.target.value.toLowerCase();
+            const filtered = currentMessages.filter(msg => (msg.nom && msg.nom.toLowerCase().includes(search)) || (msg.email && msg.email.toLowerCase().includes(search)) || (msg.sujet && msg.sujet.toLowerCase().includes(search)));
+            renderTable(filtered);
+        });
+        
+        document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+        
+        function initData() { if(!localStorage.getItem('contactMessages_gym')) localStorage.setItem('contactMessages_gym', '[]'); }
+        
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        if(menuToggle) {
+            menuToggle.style.display = 'block';
+            menuToggle.addEventListener('click', () => { sidebar.classList.toggle('active'); if(sidebar.classList.contains('active')) sidebar.style.left = '0'; else sidebar.style.left = '-280px'; });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => { checkAuth(); initData(); loadMessages(); });
+    </script>
+</body>
+</html>
