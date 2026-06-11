@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Galerie photo - Titanium Gym. Découvrez nos installations, équipements et l'ambiance de notre salle de sport.">
+    <title>Galerie | Titanium Gym - Salle de Sport</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Lightbox CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    
+    <style>
+        /* ============================================
+           STYLES COMPLETS - GALERIE PAGE
+        ============================================ */
+        
+        :root {
+            --primary-black: #0A0A0A;
+            --primary-dark: #111111;
+            --primary-gray: #1A1A1A;
+            --accent-orange: #FF6B00;
+            --accent-neon: #00FF87;
+            --accent-red: #FF3B30;
+            --text-white: #FFFFFF;
+            --text-gray: #B0B0B0;
+            --text-dark-gray: #6B6B6B;
+            --shadow-sm: 0 4px 15px rgba(0,0,0,0.3);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.4);
+            --shadow-lg: 0 15px 45px rgba(0,0,0,0.5);
+            --shadow-hover: 0 20px 40px rgba(255,107,0,0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--primary-black);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        ::selection {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        /* ========== TYPOGRAPHY ========== */
+        h1, h2, h3, h4, .logo h1 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header .subtitle {
+            color: var(--accent-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .section-header .subtitle::before,
+        .section-header .subtitle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-orange);
+            opacity: 0.5;
+        }
+        
+        .section-header .subtitle::before {
+            left: -50px;
+        }
+        
+        .section-header .subtitle::after {
+            right: -50px;
+        }
+        
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--text-white);
+            text-transform: uppercase;
+        }
+        
+        .section-header p {
+            color: var(--text-gray);
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+        
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 38px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-neon);
+            color: var(--primary-black);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,255,135,0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-orange);
+            color: var(--accent-orange);
+        }
+        
+        .btn-outline:hover {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            transform: translateY(-3px);
+        }
+        
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255,107,0,0.2);
+        }
+        
+        .navbar.scrolled {
+            padding: 5px 0;
+            background: rgba(10,10,10,0.98);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            letter-spacing: 2px;
+        }
+        
+        .logo p {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-orange);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-orange);
+        }
+        
+        .nav-links .btn-inscription {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            padding: 8px 22px;
+            border-radius: 50px;
+        }
+        
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-white);
+        }
+        
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 50vh;
+            background: linear-gradient(115deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.85) 100%), url('https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?w=1600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            padding-top: 90px;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .hero-content h1 span {
+            color: var(--accent-orange);
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+        }
+        
+        /* ========== FILTERS ========== */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            background: var(--primary-gray);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            color: var(--text-gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+        }
+        
+        /* ========== GALERIE GRID ========== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 20px;
+            transition: var(--transition);
+            color: white;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            bottom: 0;
+        }
+        
+        .gallery-overlay h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .gallery-overlay p {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        /* ========== VIDEO SECTION ========== */
+        .video-section {
+            background: var(--primary-dark);
+        }
+        
+        .video-container {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .video-overlay i {
+            font-size: 5rem;
+            color: var(--accent-orange);
+            transition: var(--transition);
+        }
+        
+        .video-overlay:hover {
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .video-overlay:hover i {
+            transform: scale(1.1);
+            color: var(--accent-neon);
+        }
+        
+        .video-overlay.hidden {
+            display: none;
+        }
+        
+        /* ========== STATS SECTION ========== */
+        .stats-section {
+            background: var(--primary-gray);
+            border-radius: 24px;
+            padding: 50px;
+            margin-top: 50px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--text-white);
+        }
+        
+        .stat-card p {
+            color: var(--text-gray);
+        }
+        
+        /* ========== CTA SECTION ========== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-black));
+        }
+        
+        .cta-banner {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+        }
+        
+        .cta-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-black);
+        }
+        
+        .cta-banner p {
+            margin-bottom: 30px;
+            color: var(--primary-black);
+            opacity: 0.9;
+        }
+        
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 25px;
+            border-top: 1px solid rgba(255,107,0,0.2);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 45px;
+            margin-bottom: 45px;
+        }
+        
+        .footer-col h4 {
+            margin-bottom: 22px;
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-orange);
+        }
+        
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            line-height: 2.1;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        
+        .footer-col a:hover {
+            color: var(--accent-orange);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--accent-orange);
+            transform: translateY(-4px);
+            padding-left: 0;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* ========== BACK TO TOP ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: var(--accent-orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 99;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ========== WHATSAPP FLOATING ========== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-float a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            transition: var(--transition);
+        }
+        
+        .whatsapp-float a:hover {
+            transform: scale(1.05);
+            background: #128C7E;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 992px) {
+            .hero-content h1 { font-size: 3rem; }
+            .section-header h2 { font-size: 2.2rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: var(--primary-black);
+                padding: 25px;
+                position: absolute;
+                top: 75px;
+                left: 0;
+                width: 100%;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid rgba(255,107,0,0.2);
+            }
+            .nav-links.active { display: flex; }
+            .hamburger { display: block; }
+            .hero { min-height: 40vh; }
+            .hero-content h1 { font-size: 2rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .footer-grid { text-align: center; }
+            .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+            .social-links { justify-content: center; }
+            .cta-banner { padding: 40px 20px; }
+            .cta-banner h2 { font-size: 1.6rem; }
+            .stats-section { padding: 30px; }
+        }
+        
+        [data-aos] {
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+        
+        [data-aos].aos-animate {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        [data-aos="fade-up"] {
+            transform: translateY(40px);
+        }
+        
+        [data-aos="zoom-in"] {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================
+     NAVBAR
+============================================ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>TITANIUM GYM</h1>
+            <p>PUSH YOUR LIMITS</p>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="about.html">À propos</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="galerie.html" class="active">Galerie</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="inscription.html" class="btn-inscription">💪 Je m'inscris</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ============================================
+     HERO SECTION
+============================================ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Notre <span>Galerie</span></h1>
+            <p>Découvrez nos installations, équipements et l'ambiance unique de Titanium Gym</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     FILTERS
+============================================ -->
+<div class="container">
+    <div class="filters" data-aos="fade-up">
+        <button class="filter-btn active" data-filter="all">Toutes</button>
+        <button class="filter-btn" data-filter="equipement">Équipements</button>
+        <button class="filter-btn" data-filter="cours">Cours</button>
+        <button class="filter-btn" data-filter="ambiance">Ambiance</button>
+    </div>
+</div>
+
+<!-- ============================================
+     GALERIE GRID
+============================================ -->
+<section>
+    <div class="container">
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Les photos seront chargées ici -->
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     VIDEO SECTION
+============================================ -->
+<section class="video-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="subtitle">VIDÉO</span>
+            <h2>Découvrez Titanium Gym en action</h2>
+            <p>Regardez notre vidéo de présentation</p>
+        </div>
+        <div class="video-container" data-aos="zoom-in">
+            <video id="gymVideo" poster="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?w=800">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-young-woman-working-out-at-the-gym-32867-large.mp4" type="video/mp4">
+                Votre navigateur ne supporte pas la vidéo.
+            </video>
+            <div class="video-overlay" id="videoOverlay">
+                <i class="fas fa-play-circle"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     STATS SECTION
+============================================ -->
+<div class="container">
+    <div class="stats-section" data-aos="fade-up">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-image"></i>
+                <h3>150+</h3>
+                <p>Photos</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-video"></i>
+                <h3>10+</h3>
+                <p>Vidéos</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>5000+</h3>
+                <p>Membres</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>5 ans</h3>
+                <p>D'excellence</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     CTA SECTION
+============================================ -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-banner" data-aos="zoom-in">
+            <h2>💪 Rejoignez l'aventure !</h2>
+            <p>Venez découvrir Titanium Gym et bénéficiez d'une séance d'essai gratuite</p>
+            <a href="inscription.html" class="btn btn-outline"><i class="fas fa-arrow-right"></i> Je m'inscris maintenant</a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+============================================ -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>TITANIUM GYM</h4>
+                <p>La meilleure salle de sport de Casablanca. Rejoignez la communauté Titanium et transformez votre corps.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Liens rapides</h4>
+                <p><a href="index.html">Accueil</a></p>
+                <p><a href="about.html">À propos</a></p>
+                <p><a href="services.html">Services</a></p>
+                <p><a href="tarifs.html">Tarifs</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Horaires</h4>
+                <p>Lun-Ven: 06:00 - 23:00</p>
+                <p>Sam: 08:00 - 21:00</p>
+                <p>Dim: 09:00 - 20:00</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fas fa-phone"></i> 05 22 33 44 55</p>
+                <p><i class="fab fa-whatsapp"></i> 06 12 34 56 78</p>
+                <p><i class="fas fa-envelope"></i> contact@titaniumgym.ma</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2026 Titanium Gym - Tous droits réservés | L'excellence sportive à Casablanca</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ============================================
+     WHATSAPP FLOATING
+============================================ -->
+<div class="whatsapp-float">
+    <a href="https://wa.me/212612345678?text=Bonjour%20Titanium%20Gym%2C%20je%20souhaite%20avoir%20plus%20d%27informations" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>Contactez-nous</span>
+    </a>
+</div>
+
+<!-- ============================================
+     BACK TO TOP
+============================================ -->
+<div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+    
+    // ========== NAVBAR ==========
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+    
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) navLinks.classList.remove('active');
+    });
+    
+    // ========== BACK TO TOP ==========
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) backToTop.classList.add('show');
+        else backToTop.classList.remove('show');
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    
+    // ========== GALERIE DATA ==========
+    const galleryImages = [
+        { src: "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?w=600", category: "equipement", title: "Zone Musculation", desc: "Machines Technogym dernier cri" },
+        { src: "https://images.pexels.com/photos/841134/pexels-photo-841134.jpeg?w=600", category: "equipement", title: "Zone Cardio", desc: "Tapis, vélos, rameurs connectés" },
+        { src: "https://images.pexels.com/photos/416476/pexels-photo-416476.jpeg?w=600", category: "equipement", title: "Espace Libre Poids", desc: "Altères jusqu'à 50kg" },
+        { src: "https://images.pexels.com/photos/260447/pexels-photo-260447.jpeg?w=600", category: "cours", title: "Cours Yoga", desc: "Salle dédiée au bien-être" },
+        { src: "https://images.pexels.com/photos/3757947/pexels-photo-3757947.jpeg?w=600", category: "cours", title: "Cours CrossFit", desc: "Entraînement intensif" },
+        { src: "https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?w=600", category: "cours", title: "Cours Boxe", desc: "Techniques et cardio" },
+        { src: "https://images.pexels.com/photos/3253501/pexels-photo-3253501.jpeg?w=600", category: "ambiance", title: "Coachs", desc: "Notre équipe professionnelle" },
+        { src: "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?w=600", category: "ambiance", title: "Ambiance", desc: "Motivation et dépassement" },
+        { src: "https://images.pexels.com/photos/4720258/pexels-photo-4720258.jpeg?w=600", category: "ambiance", title: "Nutrition", desc: "Conseils personnalisés" }
+    ];
+    
+    function renderGallery(filter = "all") {
+        const grid = document.getElementById('galleryGrid');
+        const filtered = filter === "all" ? galleryImages : galleryImages.filter(img => img.category === filter);
+        
+        grid.innerHTML = filtered.map(img => `
+            <div class="gallery-item" data-category="${img.category}" data-aos="fade-up">
+                <a href="${img.src}" data-lightbox="gallery" data-title="${img.title} - ${img.desc}">
+                    <img src="${img.src}" alt="${img.title}">
+                </a>
+                <div class="gallery-overlay">
+                    <h4>${img.title}</h4>
+                    <p>${img.desc}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Filters
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.getAttribute('data-filter');
+            renderGallery(filter);
+        });
+    });
+    
+    // ========== VIDEO PLAYER ==========
+    const video = document.getElementById('gymVideo');
+    const videoOverlay = document.getElementById('videoOverlay');
+    
+    videoOverlay.addEventListener('click', () => {
+        video.play();
+        videoOverlay.classList.add('hidden');
+    });
+    
+    video.addEventListener('pause', () => {
+        if (video.currentTime > 0) {
+            videoOverlay.classList.remove('hidden');
+        }
+    });
+    
+    video.addEventListener('ended', () => {
+        videoOverlay.classList.remove('hidden');
+    });
+    
+    // ========== INIT ==========
+    renderGallery();
+</script>
+</body>
+</html>
