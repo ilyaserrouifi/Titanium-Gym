@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Membres | Admin Titanium Gym</title>
+    <title>Gestion Coachs | Admin Titanium Gym</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -37,7 +37,7 @@
         .logout-btn { background: #FF3B30; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
         .logout-btn:hover { background: #D32F2F; transform: translateY(-2px); }
         
-        .stats-membres { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px; }
+        .stats-coachs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
         .stat-card { background: #111111; border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(255,107,0,0.1); }
         .stat-card i { font-size: 2rem; color: #FF6B00; margin-bottom: 10px; }
         .stat-card h3 { font-size: 1.8rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
@@ -48,19 +48,13 @@
         .search-input { padding: 10px 18px; border: 1px solid rgba(255,107,0,0.2); border-radius: 12px; width: 250px; background: #0A0A0A; color: white; font-family: 'Montserrat', sans-serif; }
         .btn-add { background: #00FF87; color: #0A0A0A; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
         .btn-add:hover { background: #00CC6A; transform: translateY(-2px); }
-        .btn-export { background: #FF6B00; color: white; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; margin-left: 10px; transition: all 0.3s; }
-        .btn-export:hover { background: #E05A00; transform: translateY(-2px); }
         
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 14px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
         th { color: #FF6B00; font-weight: 700; }
         tr:hover { background: rgba(255,107,0,0.05); }
         
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
-        .badge-success { background: rgba(0,255,135,0.2); color: #00FF87; }
-        .badge-warning { background: rgba(255,107,0,0.2); color: #FF6B00; }
-        .badge-danger { background: rgba(255,59,48,0.2); color: #FF3B30; }
-        
+        .coach-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
         .btn-edit { background: #FF6B00; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; margin-right: 5px; transition: all 0.3s; }
         .btn-edit:hover { background: #E05A00; transform: translateY(-2px); }
         .btn-delete { background: #FF3B30; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
@@ -68,7 +62,8 @@
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
         .modal.show { display: flex; }
-        .modal-content { background: #111111; border-radius: 24px; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; border: 1px solid rgba(255,107,0,0.2); }
+        .modal-content { background: #111111; border-radius: 24px; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; border: 1px solid rgba(255,107,0,0.2); animation: modalFadeIn 0.3s ease; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .modal-header { background: linear-gradient(135deg, #FF6B00, #FF3B30); padding: 20px 25px; border-radius: 24px 24px 0 0; display: flex; justify-content: space-between; align-items: center; }
         .modal-header h3 { font-size: 1.2rem; color: white; }
         .modal-close { cursor: pointer; font-size: 1.5rem; color: white; transition: all 0.3s; }
@@ -76,9 +71,10 @@
         .modal-body { padding: 25px; }
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #FFFFFF; font-size: 0.85rem; }
-        .form-group input, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid rgba(255,107,0,0.2); border-radius: 10px; background: #0A0A0A; color: white; font-family: 'Montserrat', sans-serif; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: #FF6B00; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid rgba(255,107,0,0.2); border-radius: 10px; background: #0A0A0A; color: white; font-family: 'Montserrat', sans-serif; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #FF6B00; }
         .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .image-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-top: 10px; border: 2px solid #FF6B00; }
         .modal-footer { padding: 20px 25px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: flex-end; gap: 12px; }
         
         .empty-state { text-align: center; padding: 50px; color: #6B6B6B; }
@@ -88,7 +84,7 @@
             .sidebar { left: -280px; }
             .main-content { margin-left: 0; }
             .menu-toggle { display: block; position: fixed; top: 20px; left: 20px; z-index: 101; background: #FF6B00; color: white; padding: 10px; border-radius: 10px; cursor: pointer; }
-            .stats-membres { grid-template-columns: 1fr; }
+            .stats-coachs { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
         }
     </style>
@@ -104,8 +100,8 @@
         </div>
         <div class="sidebar-nav">
             <a href="dashboard.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
-            <a href="membres.html" class="nav-item active"><i class="fas fa-users"></i><span>Membres</span></a>
-            <a href="coachs.html" class="nav-item"><i class="fas fa-chalkboard-user"></i><span>Coachs</span></a>
+            <a href="membres.html" class="nav-item"><i class="fas fa-users"></i><span>Membres</span></a>
+            <a href="coachs.html" class="nav-item active"><i class="fas fa-chalkboard-user"></i><span>Coachs</span></a>
             <a href="services.html" class="nav-item"><i class="fas fa-dumbbell"></i><span>Services</span></a>
             <a href="horaires.html" class="nav-item"><i class="fas fa-clock"></i><span>Horaires</span></a>
             <a href="messages.html" class="nav-item"><i class="fas fa-envelope"></i><span>Messages</span></a>
@@ -115,79 +111,59 @@
     
     <div class="main-content">
         <div class="top-bar">
-            <div class="page-title"><h2><i class="fas fa-users"></i> Gestion des membres</h2></div>
+            <div class="page-title"><h2><i class="fas fa-chalkboard-user"></i> Gestion des coachs</h2></div>
             <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
         </div>
         
-        <div class="stats-membres" id="statsMembres">
-            <div class="stat-card"><i class="fas fa-user-graduate"></i><h3 id="totalMembres">0</h3><p>Total membres</p></div>
-            <div class="stat-card"><i class="fas fa-check-circle"></i><h3 id="totalActifs">0</h3><p>Membres actifs</p></div>
-            <div class="stat-card"><i class="fas fa-clock"></i><h3 id="totalAttente">0</h3><p>En attente</p></div>
-            <div class="stat-card"><i class="fas fa-money-bill-wave"></i><h3 id="totalRevenu">0</h3><p>Revenu total (DH)</p></div>
+        <div class="stats-coachs" id="statsCoachs">
+            <div class="stat-card"><i class="fas fa-chalkboard-user"></i><h3 id="totalCoachs">0</h3><p>Total coachs</p></div>
+            <div class="stat-card"><i class="fas fa-star"></i><h3 id="specialites">0</h3><p>Spécialités</p></div>
+            <div class="stat-card"><i class="fas fa-clock"></i><h3 id="moyenneExp">0</h3><p>Expérience moyenne</p></div>
         </div>
         
         <div class="data-table">
             <div class="table-header">
-                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher par nom, email...">
-                <div>
-                    <button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> Ajouter un membre</button>
-                    <button class="btn-export" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Exporter</button>
-                </div>
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Rechercher...">
+                <button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> Ajouter un coach</button>
             </div>
             <div style="overflow-x: auto;">
-                <table>
+                <table id="coachsTable">
                     <thead>
-                        <tr><th>ID</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Abonnement</th><th>Prix</th><th>Date</th><th>Statut</th><th>Actions</th></tr>
+                        <tr><th>Photo</th><th>Nom</th><th>Spécialité</th><th>Expérience</th><th>Contact</th><th>Actions</th></tr>
                     </thead>
-                    <tbody id="membresTableBody"></tbody>
+                    <tbody id="coachsTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
     
     <!-- Modal Ajouter/Modifier -->
-    <div class="modal" id="membreModal">
+    <div class="modal" id="coachModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">Ajouter un membre</h3>
+                <h3 id="modalTitle">Ajouter un coach</h3>
                 <span class="modal-close" onclick="closeModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="membreId">
+                <input type="hidden" id="coachId">
                 <div class="form-row">
-                    <div class="form-group"><label>Nom complet *</label><input type="text" id="membreNom" placeholder="Nom et prénom" required></div>
-                    <div class="form-group"><label>Email *</label><input type="email" id="membreEmail" placeholder="email@exemple.com" required></div>
+                    <div class="form-group"><label>Nom complet *</label><input type="text" id="coachNom" placeholder="Nom et prénom" required></div>
+                    <div class="form-group"><label>Spécialité *</label><input type="text" id="coachSpecialite" placeholder="Ex: Musculation, Yoga, CrossFit" required></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Téléphone</label><input type="tel" id="membreTel" placeholder="06 XX XX XX XX"></div>
-                    <div class="form-group"><label>Date de naissance</label><input type="date" id="membreDateNaiss"></div>
+                    <div class="form-group"><label>Années d'expérience</label><input type="text" id="coachExperience" placeholder="Ex: 10 ans"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="coachEmail" placeholder="email@coach.com"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Abonnement *</label>
-                        <select id="membreAbonnement">
-                            <option value="Basic">Basic - 350 DH</option>
-                            <option value="Pro">Pro - 550 DH</option>
-                            <option value="Premium">Premium - 850 DH</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Prix (DH)</label><input type="number" id="membrePrix" placeholder="350"></div>
+                    <div class="form-group"><label>Téléphone</label><input type="tel" id="coachTel" placeholder="06 XX XX XX XX"></div>
+                    <div class="form-group"><label>Diplôme</label><input type="text" id="coachDiplome" placeholder="Ex: BPJEPS, Master"></div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Statut</label>
-                        <select id="membreStatut">
-                            <option>Actif</option>
-                            <option>En attente</option>
-                            <option>Suspendu</option>
-                            <option>Expiré</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Date fin abonnement</label><input type="date" id="membreDateFin"></div>
-                </div>
-                <div class="form-group"><label>Adresse</label><textarea id="membreAdresse" rows="2" placeholder="Adresse complète"></textarea></div>
+                <div class="form-group"><label>Biographie</label><textarea id="coachBio" rows="3" placeholder="Courte biographie du coach..."></textarea></div>
+                <div class="form-group"><label>URL Photo</label><input type="text" id="coachPhoto" placeholder="https://..."><img id="imagePreview" class="image-preview" style="display:none;"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn-delete" onclick="closeModal()">Annuler</button>
-                <button class="btn-add" onclick="saveMembre()">Enregistrer</button>
+                <button class="btn-add" onclick="saveCoach()">Enregistrer</button>
             </div>
         </div>
     </div>
@@ -196,132 +172,124 @@
         function checkAuth() { const isLoggedIn = localStorage.getItem('adminLoggedIn'); if (!isLoggedIn) window.location.href = 'login.html'; }
         function logout() { localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('adminUser'); window.location.href = 'login.html'; }
         
-        function getMembres() { return JSON.parse(localStorage.getItem('inscriptions_gym') || '[]'); }
-        function saveMembres(data) { localStorage.setItem('inscriptions_gym', JSON.stringify(data)); }
+        function getCoachs() { return JSON.parse(localStorage.getItem('coachs_gym') || '[]'); }
+        function saveCoachs(data) { localStorage.setItem('coachs_gym', JSON.stringify(data)); }
         
-        let currentMembres = [];
+        let currentCoachs = [];
         
-        function loadMembres() {
-            currentMembres = getMembres();
+        function loadCoachs() {
+            currentCoachs = getCoachs();
             updateStats();
-            renderTable(currentMembres);
+            renderTable(currentCoachs);
         }
         
         function updateStats() {
-            const total = currentMembres.length;
-            const actifs = currentMembres.filter(m => m.statut === 'Actif').length;
-            const attente = currentMembres.filter(m => m.statut === 'En attente').length;
-            const revenu = currentMembres.reduce((sum, m) => sum + (parseInt(m.prix) || 0), 0);
-            document.getElementById('totalMembres').innerText = total;
-            document.getElementById('totalActifs').innerText = actifs;
-            document.getElementById('totalAttente').innerText = attente;
-            document.getElementById('totalRevenu').innerText = revenu.toLocaleString();
+            const total = currentCoachs.length;
+            const specialites = [...new Set(currentCoachs.map(c => c.specialite))].length;
+            let totalExp = 0;
+            currentCoachs.forEach(c => { const expMatch = c.experience ? c.experience.match(/\d+/) : null; if(expMatch) totalExp += parseInt(expMatch[0]); });
+            const moyExp = total > 0 ? Math.round(totalExp / total) : 0;
+            document.getElementById('totalCoachs').innerText = total;
+            document.getElementById('specialites').innerText = specialites;
+            document.getElementById('moyenneExp').innerText = moyExp;
         }
         
         function renderTable(data) {
-            const tbody = document.getElementById('membresTableBody');
+            const tbody = document.getElementById('coachsTableBody');
             if(data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="empty-state"><i class="fas fa-user-graduate"></i><br>Aucun membre<br><button class="btn-add" style="margin-top:15px;" onclick="openAddModal()">Ajouter le premier membre</button></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fas fa-chalkboard-user"></i><br>Aucun coach<br><button class="btn-add" style="margin-top:15px;" onclick="openAddModal()">Ajouter le premier coach</button></td></tr>`;
                 return;
             }
-            tbody.innerHTML = data.map((m, i) => `<tr>
-                <td>${m.id || i+1}</td>
-                <td><strong>${escapeHtml(m.nom) || '-'}</strong></td>
-                <td>${escapeHtml(m.email) || '-'}</td>
-                <td>${escapeHtml(m.telephone) || '-'}</td>
-                <td>${escapeHtml(m.abonnement) || '-'}</td>
-                <td>${m.prix || '-'} DH</td>
-                <td>${m.date ? new Date(m.date).toLocaleDateString() : '-'}</td>
-                <td><span class="badge ${m.statut === 'Actif' ? 'badge-success' : m.statut === 'En attente' ? 'badge-warning' : 'badge-danger'}">${m.statut || 'En attente'}</span></td>
-                <td><button class="btn-edit" onclick="openEditModal(${m.id})"><i class="fas fa-edit"></i></button><button class="btn-delete" onclick="deleteMembre(${m.id})"><i class="fas fa-trash"></i></button></td>
-            </tr>`).join('');
+            tbody.innerHTML = data.map(c => `
+                <tr>
+                    <td><img src="${c.photo || 'https://placehold.co/45x45/FF6B00/white?text=C'}" class="coach-img" onerror="this.src='https://placehold.co/45x45/FF6B00/white?text=C'"></td>
+                    <td><strong>${escapeHtml(c.nom) || '-'}</strong></td>
+                    <td><span style="color:#FF6B00;">${escapeHtml(c.specialite) || '-'}</span></td>
+                    <td>${escapeHtml(c.experience) || '-'}</td>
+                    <td><small>${escapeHtml(c.email) || '-'}<br>${escapeHtml(c.telephone) || '-'}</small></td>
+                    <td><button class="btn-edit" onclick="openEditModal(${c.id})"><i class="fas fa-edit"></i></button><button class="btn-delete" onclick="deleteCoach(${c.id})"><i class="fas fa-trash"></i></button></td>
+                </tr>`).join('');
         }
         
         function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
         
         function openAddModal() {
-            document.getElementById('modalTitle').innerText = '➕ Ajouter un membre';
-            document.getElementById('membreId').value = '';
-            document.getElementById('membreNom').value = '';
-            document.getElementById('membreEmail').value = '';
-            document.getElementById('membreTel').value = '';
-            document.getElementById('membreDateNaiss').value = '';
-            document.getElementById('membreAbonnement').value = 'Basic';
-            document.getElementById('membrePrix').value = '350';
-            document.getElementById('membreStatut').value = 'En attente';
-            document.getElementById('membreDateFin').value = '';
-            document.getElementById('membreAdresse').value = '';
-            document.getElementById('membreModal').classList.add('show');
+            document.getElementById('modalTitle').innerText = '➕ Ajouter un coach';
+            document.getElementById('coachId').value = '';
+            document.getElementById('coachNom').value = '';
+            document.getElementById('coachSpecialite').value = '';
+            document.getElementById('coachExperience').value = '';
+            document.getElementById('coachEmail').value = '';
+            document.getElementById('coachTel').value = '';
+            document.getElementById('coachDiplome').value = '';
+            document.getElementById('coachBio').value = '';
+            document.getElementById('coachPhoto').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('coachModal').classList.add('show');
         }
         
         function openEditModal(id) {
-            const membre = currentMembres.find(m => m.id === id);
-            if(membre) {
-                document.getElementById('modalTitle').innerText = '✏️ Modifier le membre';
-                document.getElementById('membreId').value = membre.id;
-                document.getElementById('membreNom').value = membre.nom || '';
-                document.getElementById('membreEmail').value = membre.email || '';
-                document.getElementById('membreTel').value = membre.telephone || '';
-                document.getElementById('membreDateNaiss').value = membre.dateNaissance || '';
-                document.getElementById('membreAbonnement').value = membre.abonnement || 'Basic';
-                document.getElementById('membrePrix').value = membre.prix || '';
-                document.getElementById('membreStatut').value = membre.statut || 'En attente';
-                document.getElementById('membreDateFin').value = membre.dateFin || '';
-                document.getElementById('membreAdresse').value = membre.adresse || '';
-                document.getElementById('membreModal').classList.add('show');
+            const coach = currentCoachs.find(c => c.id === id);
+            if(coach) {
+                document.getElementById('modalTitle').innerText = '✏️ Modifier le coach';
+                document.getElementById('coachId').value = coach.id;
+                document.getElementById('coachNom').value = coach.nom || '';
+                document.getElementById('coachSpecialite').value = coach.specialite || '';
+                document.getElementById('coachExperience').value = coach.experience || '';
+                document.getElementById('coachEmail').value = coach.email || '';
+                document.getElementById('coachTel').value = coach.telephone || '';
+                document.getElementById('coachDiplome').value = coach.diplome || '';
+                document.getElementById('coachBio').value = coach.bio || '';
+                document.getElementById('coachPhoto').value = coach.photo || '';
+                const preview = document.getElementById('imagePreview');
+                if(coach.photo) { preview.src = coach.photo; preview.style.display = 'block'; }
+                else preview.style.display = 'none';
+                document.getElementById('coachModal').classList.add('show');
             }
         }
         
-        function saveMembre() {
-            const id = document.getElementById('membreId').value;
-            const nom = document.getElementById('membreNom').value.trim();
-            const email = document.getElementById('membreEmail').value.trim();
+        function saveCoach() {
+            const id = document.getElementById('coachId').value;
+            const nom = document.getElementById('coachNom').value.trim();
+            const specialite = document.getElementById('coachSpecialite').value.trim();
+            if(!nom || !specialite) { showToast('Le nom et la spécialité sont requis', 'error'); return; }
             
-            if(!nom || !email) { showToast('Le nom et l\'email sont requis', 'error'); return; }
-            
-            let abonnement = document.getElementById('membreAbonnement').value;
-            let prix = document.getElementById('membrePrix').value;
-            if(abonnement === 'Basic' && !prix) prix = 350;
-            if(abonnement === 'Pro' && !prix) prix = 550;
-            if(abonnement === 'Premium' && !prix) prix = 850;
-            
-            const membre = {
-                nom, email,
-                telephone: document.getElementById('membreTel').value,
-                dateNaissance: document.getElementById('membreDateNaiss').value,
-                abonnement: abonnement,
-                prix: prix,
-                statut: document.getElementById('membreStatut').value,
-                dateFin: document.getElementById('membreDateFin').value,
-                adresse: document.getElementById('membreAdresse').value,
+            const coach = {
+                nom, specialite,
+                experience: document.getElementById('coachExperience').value,
+                email: document.getElementById('coachEmail').value,
+                telephone: document.getElementById('coachTel').value,
+                diplome: document.getElementById('coachDiplome').value,
+                bio: document.getElementById('coachBio').value,
+                photo: document.getElementById('coachPhoto').value || 'https://placehold.co/100x100/FF6B00/white?text=C',
                 dateModification: new Date().toISOString()
             };
             
-            let membres = getMembres();
+            let coachs = getCoachs();
             if(id) {
-                const index = membres.findIndex(m => m.id === parseInt(id));
-                if(index !== -1) { membres[index] = { ...membres[index], ...membre }; showToast('Membre modifié avec succès'); }
+                const index = coachs.findIndex(c => c.id === parseInt(id));
+                if(index !== -1) { coachs[index] = { ...coachs[index], ...coach }; showToast('Coach modifié avec succès'); }
             } else {
-                const newId = membres.length > 0 ? Math.max(...membres.map(m => m.id)) + 1 : 1;
-                membres.push({ id: newId, ...membre, date: new Date().toISOString() });
-                showToast('Membre ajouté avec succès');
+                const newId = coachs.length > 0 ? Math.max(...coachs.map(c => c.id)) + 1 : 1;
+                coachs.push({ id: newId, ...coach, dateCreation: new Date().toISOString() });
+                showToast('Coach ajouté avec succès');
             }
-            saveMembres(membres);
+            saveCoachs(coachs);
             closeModal();
-            loadMembres();
+            loadCoachs();
         }
         
-        function deleteMembre(id) {
-            if(confirm('⚠️ Supprimer définitivement ce membre ?')) {
-                let membres = getMembres();
-                membres = membres.filter(m => m.id !== id);
-                saveMembres(membres);
-                loadMembres();
-                showToast('Membre supprimé');
+        function deleteCoach(id) {
+            if(confirm('⚠️ Supprimer définitivement ce coach ?')) {
+                let coachs = getCoachs();
+                coachs = coachs.filter(c => c.id !== id);
+                saveCoachs(coachs);
+                loadCoachs();
+                showToast('Coach supprimé');
             }
         }
         
-        function closeModal() { document.getElementById('membreModal').classList.remove('show'); }
+        function closeModal() { document.getElementById('coachModal').classList.remove('show'); }
         
         function showToast(msg, type = 'success') {
             const toast = document.createElement('div');
@@ -331,29 +299,21 @@
             setTimeout(() => toast.remove(), 3000);
         }
         
-        function exportToExcel() {
-            let csv = "ID,Nom,Email,Téléphone,Abonnement,Prix,Date,Statut\n";
-            currentMembres.forEach((m, i) => {
-                csv += `${i+1},"${escapeCsv(m.nom || '')}","${escapeCsv(m.email || '')}","${escapeCsv(m.telephone || '')}","${m.abonnement || ''}",${m.prix || 0},"${m.date ? new Date(m.date).toLocaleDateString() : ''}","${m.statut || 'En attente'}"\n`;
-            });
-            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `membres_titanium_${new Date().toISOString().slice(0,10)}.csv`;
-            link.click();
-            showToast('Export terminé');
-        }
-        function escapeCsv(str) { if(!str) return ''; return str.replace(/"/g, '""'); }
-        
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const search = e.target.value.toLowerCase();
-            const filtered = currentMembres.filter(m => (m.nom && m.nom.toLowerCase().includes(search)) || (m.email && m.email.toLowerCase().includes(search)));
+            const filtered = currentCoachs.filter(c => (c.nom && c.nom.toLowerCase().includes(search)) || (c.specialite && c.specialite.toLowerCase().includes(search)));
             renderTable(filtered);
+        });
+        
+        document.getElementById('coachPhoto').addEventListener('input', (e) => {
+            const preview = document.getElementById('imagePreview');
+            if(e.target.value) { preview.src = e.target.value; preview.style.display = 'block'; }
+            else preview.style.display = 'none';
         });
         
         document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
         
-        function initData() { if(!localStorage.getItem('inscriptions_gym')) localStorage.setItem('inscriptions_gym', '[]'); }
+        function initData() { if(!localStorage.getItem('coachs_gym')) localStorage.setItem('coachs_gym', '[]'); }
         
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
@@ -362,7 +322,7 @@
             menuToggle.addEventListener('click', () => { sidebar.classList.toggle('active'); if(sidebar.classList.contains('active')) sidebar.style.left = '0'; else sidebar.style.left = '-280px'; });
         }
         
-        document.addEventListener('DOMContentLoaded', () => { checkAuth(); initData(); loadMembres(); });
+        document.addEventListener('DOMContentLoaded', () => { checkAuth(); initData(); loadCoachs(); });
     </script>
 </body>
 </html>
