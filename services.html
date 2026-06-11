@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Nos services - Titanium Gym. Découvrez nos équipements, cours collectifs, coaching personnalisé et bien plus.">
+    <title>Nos Services | Titanium Gym - Salle de Sport</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           STYLES COMPLETS - SERVICES PAGE
+        ============================================ */
+        
+        :root {
+            --primary-black: #0A0A0A;
+            --primary-dark: #111111;
+            --primary-gray: #1A1A1A;
+            --accent-orange: #FF6B00;
+            --accent-neon: #00FF87;
+            --accent-red: #FF3B30;
+            --text-white: #FFFFFF;
+            --text-gray: #B0B0B0;
+            --text-dark-gray: #6B6B6B;
+            --shadow-sm: 0 4px 15px rgba(0,0,0,0.3);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.4);
+            --shadow-lg: 0 15px 45px rgba(0,0,0,0.5);
+            --shadow-hover: 0 20px 40px rgba(255,107,0,0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--primary-black);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        ::selection {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        /* ========== TYPOGRAPHY ========== */
+        h1, h2, h3, h4, .logo h1 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header .subtitle {
+            color: var(--accent-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .section-header .subtitle::before,
+        .section-header .subtitle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-orange);
+            opacity: 0.5;
+        }
+        
+        .section-header .subtitle::before {
+            left: -50px;
+        }
+        
+        .section-header .subtitle::after {
+            right: -50px;
+        }
+        
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--text-white);
+            text-transform: uppercase;
+        }
+        
+        .section-header p {
+            color: var(--text-gray);
+            max-width: 650px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+        
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 38px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-neon);
+            color: var(--primary-black);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,255,135,0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-orange);
+            color: var(--accent-orange);
+        }
+        
+        .btn-outline:hover {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            transform: translateY(-3px);
+        }
+        
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255,107,0,0.2);
+        }
+        
+        .navbar.scrolled {
+            padding: 5px 0;
+            background: rgba(10,10,10,0.98);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            letter-spacing: 2px;
+        }
+        
+        .logo p {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-orange);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-orange);
+        }
+        
+        .nav-links .btn-inscription {
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            padding: 8px 22px;
+            border-radius: 50px;
+        }
+        
+        .nav-links .btn-inscription::after {
+            display: none;
+        }
+        
+        .nav-links .btn-inscription:hover {
+            background: var(--accent-neon);
+            transform: translateY(-2px);
+        }
+        
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-white);
+        }
+        
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 60vh;
+            background: linear-gradient(115deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.85) 100%), url('https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?w=1600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            padding-top: 90px;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .hero-content h1 span {
+            color: var(--accent-orange);
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+        }
+        
+        /* ========== SERVICES DETAILS ========== */
+        .services-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-detail-card {
+            background: var(--primary-gray);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .service-detail-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255,107,0,0.3);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .service-detail-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .service-detail-card:hover .service-detail-img {
+            transform: scale(1.05);
+        }
+        
+        .service-detail-content {
+            padding: 30px;
+        }
+        
+        .service-detail-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--accent-orange);
+        }
+        
+        .service-detail-content p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .service-features {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .service-features li {
+            padding: 8px 0;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-features li i {
+            color: var(--accent-neon);
+            width: 20px;
+        }
+        
+        /* ========== COURS SECTION ========== */
+        .cours-section {
+            background: var(--primary-dark);
+        }
+        
+        .cours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .cours-card {
+            background: var(--primary-gray);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .cours-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,107,0,0.3);
+        }
+        
+        .cours-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255,107,0,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .cours-icon i {
+            font-size: 2rem;
+            color: var(--accent-orange);
+        }
+        
+        .cours-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .cours-card p {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .cours-time {
+            display: inline-block;
+            background: rgba(255,107,0,0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--accent-orange);
+        }
+        
+        /* ========== EQUIPEMENTS SECTION ========== */
+        .equipements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .equipement-card {
+            background: var(--primary-gray);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .equipement-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,107,0,0.1);
+        }
+        
+        .equipement-card i {
+            font-size: 2.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 15px;
+        }
+        
+        .equipement-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .equipement-card p {
+            color: var(--text-gray);
+            font-size: 0.8rem;
+        }
+        
+        /* ========== PRICING SECTION ========== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+        }
+        
+        .pricing-card {
+            background: var(--primary-gray);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid var(--accent-orange);
+            transform: scale(1.02);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--accent-orange);
+            color: var(--primary-black);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255,107,0,0.3);
+        }
+        
+        .pricing-card.popular:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: var(--text-gray);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-gray);
+        }
+        
+        .pricing-features li i {
+            color: var(--accent-neon);
+            margin-right: 10px;
+        }
+        
+        /* ========== CTA SECTION ========== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-black));
+        }
+        
+        .cta-banner {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+        }
+        
+        .cta-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-black);
+        }
+        
+        .cta-banner p {
+            margin-bottom: 30px;
+            color: var(--primary-black);
+            opacity: 0.9;
+        }
+        
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 25px;
+            border-top: 1px solid rgba(255,107,0,0.2);
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 45px;
+            margin-bottom: 45px;
+        }
+        
+        .footer-col h4 {
+            margin-bottom: 22px;
+            font-size: 1.2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent-orange);
+        }
+        
+        .footer-col p, .footer-col a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            line-height: 2.1;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        
+        .footer-col a:hover {
+            color: var(--accent-orange);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--accent-orange);
+            transform: translateY(-4px);
+            padding-left: 0;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* ========== BACK TO TOP ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: var(--accent-orange);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 99;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ========== WHATSAPP FLOATING ========== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-float a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            transition: var(--transition);
+        }
+        
+        .whatsapp-float a:hover {
+            transform: scale(1.05);
+            background: #128C7E;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 992px) {
+            .hero-content h1 { font-size: 3rem; }
+            .section-header h2 { font-size: 2.2rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: var(--primary-black);
+                padding: 25px;
+                position: absolute;
+                top: 75px;
+                left: 0;
+                width: 100%;
+                gap: 20px;
+                text-align: center;
+                border-bottom: 1px solid rgba(255,107,0,0.2);
+            }
+            .nav-links.active { display: flex; }
+            .hamburger { display: block; }
+            .hero { min-height: 50vh; }
+            .hero-content h1 { font-size: 2rem; }
+            .services-details-grid { grid-template-columns: 1fr; }
+            .footer-grid { text-align: center; }
+            .footer-col h4::after { left: 50%; transform: translateX(-50%); }
+            .social-links { justify-content: center; }
+            .cta-banner { padding: 40px 20px; }
+            .cta-banner h2 { font-size: 1.6rem; }
+        }
+        
+        [data-aos] {
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+        
+        [data-aos].aos-animate {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        [data-aos="fade-up"] {
+            transform: translateY(40px);
+        }
+        
+        [data-aos="zoom-in"] {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================
+     NAVBAR
+============================================ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h1>TITANIUM GYM</h1>
+            <p>PUSH YOUR LIMITS</p>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="about.html">À propos</a></li>
+            <li><a href="services.html" class="active">Services</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="inscription.html" class="btn-inscription">💪 Je m'inscris</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ============================================
+     HERO SECTION
+============================================ -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Nos <span>Services</span></h1>
+            <p>Des prestations complètes pour tous vos objectifs sportifs</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     SERVICES DETAILS
+============================================ -->
+<section>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="subtitle">CE QUE NOUS PROPOSONS</span>
+            <h2>Des Services Premium</h2>
+            <p>Des installations et des programmes adaptés à vos besoins</p>
+        </div>
+        <div class="services-details-grid">
+            <div class="service-detail-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?w=600" alt="Musculation" class="service-detail-img">
+                <div class="service-detail-content">
+                    <h3>🏋️ Musculation</h3>
+                    <p>Un espace dédié de plus de 300m² équipé des meilleures machines Technogym. Que vous soyez débutant ou confirmé, nos coachs vous accompagnent.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> +50 machines de musculation</li>
+                        <li><i class="fas fa-check"></i> Bancs et cages à squat</li>
+                        <li><i class="fas fa-check"></i> Altères jusqu'à 50kg</li>
+                        <li><i class="fas fa-check"></i> Machines connectées</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-detail-card" data-aos="fade-up" data-aos-delay="150">
+                <img src="https://images.pexels.com/photos/841134/pexels-photo-841134.jpeg?w=600" alt="Cardio" class="service-detail-img">
+                <div class="service-detail-content">
+                    <h3>❤️ Cardio Training</h3>
+                    <p>Un espace cardio moderne avec des équipements dernier cri pour brûler des calories et améliorer votre endurance.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Tapis de course connectés</li>
+                        <li><i class="fas fa-check"></i> Vélos elliptiques</li>
+                        <li><i class="fas fa-check"></i> Rameurs haut de gamme</li>
+                        <li><i class="fas fa-check"></i> Vélos spinning</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-detail-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://images.pexels.com/photos/260447/pexels-photo-260447.jpeg?w=600" alt="Yoga" class="service-detail-img">
+                <div class="service-detail-content">
+                    <h3>🧘 Yoga & Pilates</h3>
+                    <p>Retrouvez calme et sérénité dans notre salle dédiée au yoga et pilates. Cours pour tous niveaux.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Salle calme et climatisée</li>
+                        <li><i class="fas fa-check"></i> Tapis de yoga fournis</li>
+                        <li><i class="fas fa-check"></i> Cours 7j/7</li>
+                        <li><i class="fas fa-check"></i> Professeures certifiées</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="service-detail-card" data-aos="fade-up" data-aos-delay="250">
+                <img src="https://images.pexels.com/photos/3757947/pexels-photo-3757947.jpeg?w=600" alt="CrossFit" class="service-detail-img">
+                <div class="service-detail-content">
+                    <h3>⚡ CrossFit & HIIT</h3>
+                    <p>Entraînements intenses pour repousser vos limites et atteindre vos objectifs rapidement.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Zone CrossFit dédiée</li>
+                        <li><i class="fas fa-check"></i> WOD quotidiens</li>
+                        <li><i class="fas fa-check"></i> Coachs spécialisés</li>
+                        <li><i class="fas fa-check"></i> Équipements spécifiques</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     COURS COLLECTIFS
+============================================ -->
+<section class="cours-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="subtitle">ACTIVITÉS COLLECTIVES</span>
+            <h2>Cours Collectifs</h2>
+            <p>Plus de 45 cours par semaine pour tous les niveaux</p>
+        </div>
+        <div class="cours-grid">
+            <div class="cours-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="cours-icon"><i class="fas fa-dumbbell"></i></div>
+                <h4>Body Pump</h4>
+                <p>Cours de musculation en groupe avec barres et poids</p>
+                <span class="cours-time">Lun/Mer/Ven - 18h30</span>
+            </div>
+            <div class="cours-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="cours-icon"><i class="fas fa-person-walking"></i></div>
+                <h4>Zumba</h4>
+                <p>Danse fitness pour brûler des calories en s'amusant</p>
+                <span class="cours-time">Mar/Jeu/Sam - 19h00</span>
+            </div>
+            <div class="cours-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="cours-icon"><i class="fas fa-spa"></i></div>
+                <h4>Yoga Flow</h4>
+                <p>Enchaînement dynamique pour corps et esprit</p>
+                <span class="cours-time">Lun/Mer/Sam - 09h00</span>
+            </div>
+            <div class="cours-card" data-aos="fade-up" data-aos-delay="250">
+                <div class="cours-icon"><i class="fas fa-heartbeat"></i></div>
+                <h4>Body Combat</h4>
+                <p>Arts martiaux et cardio pour se défouler</p>
+                <span class="cours-time">Mar/Jeu - 18h00</span>
+            </div>
+            <div class="cours-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="cours-icon"><i class="fas fa-hand-fist"></i></div>
+                <h4>Boxe & MMA</h4>
+                <p>Techniques de boxe et self-défense</p>
+                <span class="cours-time">Lun/Mer - 20h00</span>
+            </div>
+            <div class="cours-card" data-aos="fade-up" data-aos-delay="350">
+                <div class="cours-icon"><i class="fas fa-bicycle"></i></div>
+                <h4>RPM</h4>
+                <p>Vélo en salle, cardio intense</p>
+                <span class="cours-time">Mar/Jeu/Sam - 17h30</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     ÉQUIPEMENTS
+============================================ -->
+<section>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="subtitle">ÉQUIPEMENTS PREMIUM</span>
+            <h2>Nos Installations</h2>
+            <p>Plus de 150 équipements de dernière génération</p>
+        </div>
+        <div class="equipements-grid">
+            <div class="equipement-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-dumbbell"></i>
+                <h4>Musculation</h4>
+                <p>50+ machines Technogym</p>
+            </div>
+            <div class="equipement-card" data-aos="fade-up" data-aos-delay="150">
+                <i class="fas fa-heartbeat"></i>
+                <h4>Cardio</h4>
+                <p>40+ tapis, vélos, rameurs</p>
+            </div>
+            <div class="equipement-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-hand-fist"></i>
+                <h4>CrossFit</h4>
+                <p>Zone dédiée + matériel</p>
+            </div>
+            <class="equipement-card" data-aos="fade-up" data-aos-delay="250">
+                <i class="fas fa-spa"></i>
+                <h4>Spa & Sauna</h4>
+                <p>Espace détente après effort</p>
+            </div>
+            <div class="equipement-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-locker"></i>
+                <h4>Vestiaires</h4>
+                <p>Casiers sécurisés, douches</p>
+            </div>
+            <div class="equipement-card" data-aos="fade-up" data-aos-delay="350">
+                <i class="fas fa-wifi"></i>
+                <h4>Wi-Fi Gratuit</h4>
+                <p>Connexion haut débit</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     COACHING PERSONNALISÉ
+============================================ -->
+<section class="cours-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="subtitle">ACCOMPAGNEMENT SUR MESURE</span>
+            <h2>Coaching Personnalisé</h2>
+            <p>Des coachs dédiés pour atteindre vos objectifs plus rapidement</p>
+        </div>
+        <div class="services-details-grid">
+            <div class="service-detail-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.pexels.com/photos/3253501/pexels-photo-3253501.jpeg?w=600" alt="Coaching" class="service-detail-img">
+                <div class="service-detail-content">
+                    <h3>🎯 Suivi Individuel</h3>
+                    <p>Un coach dédié qui vous suit dans votre progression. Évaluation initiale, programme sur mesure, suivi hebdomadaire.</p>
+                    <a href="inscription.html" class="btn btn-primary" style="margin-top: 15px;">Réserver une séance</a>
+                </div>
+            </div>
+            <div class="service-detail-card" data-aos="fade-up" data-aos-delay="150">
+                <img src="https://images.pexels.com/photos/4720258/pexels-photo-4720258.jpeg?w=600" alt="Nutrition" class="service-detail-img">
+                <div class="service-detail-content">
+                    <h3>🍎 Conseil Nutrition</h3>
+                    <p>Bénéficiez de l'expertise de nos nutritionnistes pour un plan alimentaire adapté à vos objectifs.</p>
+                    <a href="inscription.html" class="btn btn-outline" style="margin-top: 15px;">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     TARIFS SECTION
+============================================ -->
+<section>
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="subtitle">NOS ABONNEMENTS</span>
+            <h2>Choisissez votre formule</h2>
+            <p>Des tarifs adaptés à tous les budgets</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card" data-aos="fade-up" data-aos-delay="100">
+                <h3>Basic</h3>
+                <div class="price">350<span> DH/mois</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Accès salle (9h-17h)</li>
+                    <li><i class="fas fa-check"></i> Équipements cardio</li>
+                    <li><i class="fas fa-check"></i> Douches & vestiaires</li>
+                    <li><i class="fas fa-times"></i> Cours collectifs</li>
+                    <li><i class="fas fa-times"></i> Coaching</li>
+                </ul>
+                <a href="inscription.html" class="btn btn-outline" style="width:100%;">Choisir</a>
+            </div>
+            <div class="pricing-card popular" data-aos="fade-up" data-aos-delay="150">
+                <div class="popular-badge">⭐ POPULAIRE</div>
+                <h3>Pro</h3>
+                <div class="price">550<span> DH/mois</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Accès illimité 7j/7</li>
+                    <li><i class="fas fa-check"></i> Tous les équipements</li>
+                    <li><i class="fas fa-check"></i> Cours collectifs inclus</li>
+                    <li><i class="fas fa-check"></i> 1 séance coaching/mois</li>
+                    <li><i class="fas fa-check"></i> Consultation nutrition</li>
+                </ul>
+                <a href="inscription.html" class="btn btn-primary" style="width:100%;">Choisir</a>
+            </div>
+            <div class="pricing-card" data-aos="fade-up" data-aos-delay="200">
+                <h3>Premium</h3>
+                <div class="price">850<span> DH/mois</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Tout l'abonnement Pro</li>
+                    <li><i class="fas fa-check"></i> Coaching illimité</li>
+                    <li><i class="fas fa-check"></i> Accès Spa & Sauna</li>
+                    <li><i class="fas fa-check"></i> Parking privé</li>
+                    <li><i class="fas fa-check"></i> Casier personnel</li>
+                </ul>
+                <a href="inscription.html" class="btn btn-outline" style="width:100%;">Choisir</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     CTA SECTION
+============================================ -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-banner" data-aos="zoom-in">
+            <h2>Prêt à rejoindre l'aventure ?</h2>
+            <p>Offre spéciale premier mois à -50% pour les nouveaux membres !</p>
+            <a href="inscription.html" class="btn btn-outline"><i class="fas fa-arrow-right"></i> Je m'inscris maintenant</a>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+============================================ -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>TITANIUM GYM</h4>
+                <p>La meilleure salle de sport de Casablanca. Rejoignez la communauté Titanium et transformez votre corps.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Liens rapides</h4>
+                <p><a href="index.html">Accueil</a></p>
+                <p><a href="about.html">À propos</a></p>
+                <p><a href="services.html">Services</a></p>
+                <p><a href="tarifs.html">Tarifs</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Horaires</h4>
+                <p>Lun-Ven: 06:00 - 23:00</p>
+                <p>Sam: 08:00 - 21:00</p>
+                <p>Dim: 09:00 - 20:00</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><i class="fas fa-phone"></i> 05 22 33 44 55</p>
+                <p><i class="fab fa-whatsapp"></i> 06 12 34 56 78</p>
+                <p><i class="fas fa-envelope"></i> contact@titaniumgym.ma</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2026 Titanium Gym - Tous droits réservés | L'excellence sportive à Casablanca</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ============================================
+     WHATSAPP FLOATING
+============================================ -->
+<div class="whatsapp-float">
+    <a href="https://wa.me/212612345678?text=Bonjour%20Titanium%20Gym%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20les%20services" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>Contactez-nous</span>
+    </a>
+</div>
+
+<!-- ============================================
+     BACK TO TOP
+============================================ -->
+<div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+    
+    // ========== NAVBAR ==========
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+    
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) navLinks.classList.remove('active');
+    });
+    
+    // ========== BACK TO TOP ==========
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) backToTop.classList.add('show');
+        else backToTop.classList.remove('show');
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>
