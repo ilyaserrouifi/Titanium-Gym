@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Admin Titanium Gym</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: #0A0A0A; color: #FFFFFF; }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: #111111;
+            border-right: 1px solid rgba(255,107,0,0.2);
+            z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+        .sidebar-header { padding: 25px; text-align: center; border-bottom: 1px solid rgba(255,107,0,0.2); }
+        .logo-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #FF6B00, #FF3B30); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
+        .logo-icon i { font-size: 1.8rem; color: white; }
+        .sidebar-header h3 { font-size: 1.2rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
+        .sidebar-header p { font-size: 0.65rem; opacity: 0.7; }
+        .sidebar-nav { padding: 20px 0; }
+        .nav-item { padding: 12px 25px; display: flex; align-items: center; gap: 15px; color: #B0B0B0; text-decoration: none; transition: all 0.3s; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,107,0,0.1); color: #FF6B00; border-left: 4px solid #FF6B00; }
+        .nav-item i { width: 22px; }
+        
+        /* Main Content */
+        .main-content { margin-left: 280px; padding: 20px; min-height: 100vh; }
+        .top-bar { background: #111111; border-radius: 16px; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid rgba(255,107,0,0.1); }
+        .logout-btn { background: #FF3B30; color: white; border: none; padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .logout-btn:hover { background: #D32F2F; transform: translateY(-2px); }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: #111111; border-radius: 20px; padding: 25px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,107,0,0.1); transition: all 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: #FF6B00; }
+        .stat-info h3 { font-size: 2rem; color: #FF6B00; font-family: 'Oswald', sans-serif; }
+        .stat-info p { color: #B0B0B0; font-size: 0.8rem; }
+        .stat-icon i { font-size: 2.5rem; color: #FF6B00; opacity: 0.7; }
+        
+        /* Charts */
+        .chart-container { background: #111111; border-radius: 20px; padding: 20px; border: 1px solid rgba(255,107,0,0.1); margin-bottom: 30px; }
+        .section-title { margin: 30px 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .section-title h3 { font-size: 1.2rem; color: #FF6B00; }
+        .section-title a { color: #FF6B00; text-decoration: none; font-weight: 600; }
+        
+        /* Tables */
+        .data-table { background: #111111; border-radius: 20px; padding: 20px; overflow-x: auto; border: 1px solid rgba(255,107,0,0.1); margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: #FF6B00; font-weight: 700; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .badge-success { background: rgba(0,255,135,0.2); color: #00FF87; }
+        .badge-warning { background: rgba(255,107,0,0.2); color: #FF6B00; }
+        
+        .empty-state { text-align: center; padding: 40px; color: #6B6B6B; }
+        .empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
+        
+        @media (max-width: 768px) {
+            .sidebar { left: -280px; }
+            .main-content { margin-left: 0; }
+            .menu-toggle { display: block; position: fixed; top: 20px; left: 20px; z-index: 101; background: #FF6B00; color: white; padding: 10px; border-radius: 10px; cursor: pointer; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" id="menuToggle" style="display:none;"><i class="fas fa-bars"></i></div>
+    
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon"><i class="fas fa-dumbbell"></i></div>
+            <h3>TITANIUM GYM</h3>
+            <p>ESPACE ADMIN</p>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+            <a href="membres.html" class="nav-item"><i class="fas fa-users"></i><span>Membres</span></a>
+            <a href="coachs.html" class="nav-item"><i class="fas fa-chalkboard-user"></i><span>Coachs</span></a>
+            <a href="services.html" class="nav-item"><i class="fas fa-dumbbell"></i><span>Services</span></a>
+            <a href="horaires.html" class="nav-item"><i class="fas fa-clock"></i><span>Horaires</span></a>
+            <a href="messages.html" class="nav-item"><i class="fas fa-envelope"></i><span>Messages</span></a>
+            <a href="#" class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="page-title"><h2><i class="fas fa-chart-line"></i> Tableau de bord</h2></div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-info"><h3 id="totalMembres">0</h3><p>Membres actifs</p></div><div class="stat-icon"><i class="fas fa-users"></i></div></div>
+            <div class="stat-card"><div class="stat-info"><h3 id="totalCoachs">0</h3><p>Coachs</p></div><div class="stat-icon"><i class="fas fa-chalkboard-user"></i></div></div>
+            <div class="stat-card"><div class="stat-info"><h3 id="totalMessages">0</h3><p>Messages non lus</p></div><div class="stat-icon"><i class="fas fa-envelope"></i></div></div>
+            <div class="stat-card"><div class="stat-info"><h3 id="totalRevenu">0</h3><p>Revenu (DH)</p></div><div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div></div>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="inscriptionsChart" height="80"></canvas>
+        </div>
+        
+        <div class="section-title"><h3><i class="fas fa-clock"></i> Dernières inscriptions</h3><a href="membres.html">Voir tout <i class="fas fa-arrow-right"></i></a></div>
+        <div class="data-table">
+            <table>
+                <thead><tr><th>Nom</th><th>Email</th><th>Abonnement</th><th>Date</th><th>Statut</th></tr></thead>
+                <tbody id="recentTableBody"><tr><td colspan="5" class="empty-state">Aucune inscription</td></tr></tbody>
+            </table>
+        </div>
+        
+        <div class="section-title"><h3><i class="fas fa-envelope"></i> Derniers messages</h3><a href="messages.html">Voir tout <i class="fas fa-arrow-right"></i></a></div>
+        <div class="data-table">
+            <table>
+                <thead><tr><th>Nom</th><th>Email</th><th>Sujet</th><th>Date</th><th>Statut</th></tr></thead>
+                <tbody id="recentMessagesBody"><tr><td colspan="5" class="empty-state">Aucun message</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function checkAuth() { const isLoggedIn = localStorage.getItem('adminLoggedIn'); if (!isLoggedIn) window.location.href = 'login.html'; }
+        function logout() { localStorage.removeItem('adminLoggedIn'); localStorage.removeItem('adminUser'); window.location.href = 'login.html'; }
+        
+        function getInscriptions() { return JSON.parse(localStorage.getItem('inscriptions_gym') || '[]'); }
+        function getMessages() { return JSON.parse(localStorage.getItem('contactMessages_gym') || '[]'); }
+        function getCoachs() { return JSON.parse(localStorage.getItem('coachs_gym') || '[]'); }
+        
+        function loadDashboard() {
+            const inscriptions = getInscriptions();
+            const messages = getMessages();
+            const coachs = getCoachs();
+            
+            document.getElementById('totalMembres').innerText = inscriptions.length;
+            document.getElementById('totalCoachs').innerText = coachs.length;
+            document.getElementById('totalMessages').innerText = messages.filter(m => !m.lu).length;
+            const revenu = inscriptions.reduce((sum, i) => sum + (parseInt(i.prix) || 0), 0);
+            document.getElementById('totalRevenu').innerText = revenu.toLocaleString();
+            
+            // Chart
+            const mois = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+            const inscriptionsParMois = new Array(12).fill(0);
+            inscriptions.forEach(ins => { if(ins.date) { const month = new Date(ins.date).getMonth(); if(month >= 0) inscriptionsParMois[month]++; } });
+            
+            const ctx = document.getElementById('inscriptionsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: mois, datasets: [{ label: 'Inscriptions', data: inscriptionsParMois, borderColor: '#FF6B00', backgroundColor: 'rgba(255,107,0,0.1)', fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: true }
+            });
+            
+            // Recent inscriptions
+            const recent = [...inscriptions].reverse().slice(0,5);
+            const tbody = document.getElementById('recentTableBody');
+            if(recent.length === 0) tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucune inscription</td></tr>';
+            else tbody.innerHTML = recent.map(ins => `<tr><td>${ins.nom || '-'}</td><td>${ins.email || '-'}</td><td>${ins.abonnement || '-'}</td><td>${ins.date ? new Date(ins.date).toLocaleDateString() : '-'}</td><td><span class="badge badge-warning">${ins.statut || 'En attente'}</span></td></tr>`).join('');
+            
+            // Recent messages
+            const recentMsg = [...messages].reverse().slice(0,5);
+            const msgBody = document.getElementById('recentMessagesBody');
+            if(recentMsg.length === 0) msgBody.innerHTML = '<tr><td colspan="5" class="empty-state">Aucun message</td></tr>';
+            else msgBody.innerHTML = recentMsg.map(msg => `<tr><td>${msg.nom || '-'}</td><td>${msg.email || '-'}</td><td>${msg.sujet || '-'}</td><td>${msg.date || '-'}</td><td><span class="badge ${msg.lu ? 'badge-success' : 'badge-warning'}">${msg.lu ? 'Lu' : 'Non lu'}</span></td></tr>`).join('');
+        }
+        
+        function initData() {
+            if(!localStorage.getItem('inscriptions_gym')) localStorage.setItem('inscriptions_gym', '[]');
+            if(!localStorage.getItem('contactMessages_gym')) localStorage.setItem('contactMessages_gym', '[]');
+            if(!localStorage.getItem('coachs_gym')) localStorage.setItem('coachs_gym', '[]');
+            if(!localStorage.getItem('services_gym')) localStorage.setItem('services_gym', '[]');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => { checkAuth(); initData(); loadDashboard(); });
+        
+        // Mobile menu
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        if(menuToggle) {
+            menuToggle.style.display = 'block';
+            menuToggle.addEventListener('click', () => { sidebar.classList.toggle('active'); if(sidebar.classList.contains('active')) sidebar.style.left = '0'; else sidebar.style.left = '-280px'; });
+        }
+    </script>
+</body>
+</html>
